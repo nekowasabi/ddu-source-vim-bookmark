@@ -28,6 +28,10 @@ export class Source extends BaseSource<Params> {
           const items: Item<ActionData>[] = [];
 
           try {
+            // ~/.vim-bookmarksのl:bm_sessionsを読み込む
+            // 変数の中身をjsonに変換する
+            // 中身を展開
+            // それぞれのパスをitemsに追加する
             for await (const entry of Deno.readDir(root)) {
               const path = join(root, entry.name);
 
