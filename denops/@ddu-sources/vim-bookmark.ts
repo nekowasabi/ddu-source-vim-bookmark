@@ -42,7 +42,6 @@ export class Source extends BaseSource<Params> {
             const bookmarks: Bookmarks = [];
             for (const bookmarkData of bookmarksData) {
               const d = bookmarkData.split(":");
-              console.log(d);
               const b: Bookmark = {
                 path: d[0],
                 line: Number(d[1]),
