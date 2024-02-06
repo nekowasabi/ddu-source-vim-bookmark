@@ -6,6 +6,8 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
 import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.10.2/deps.ts";
 
+import { ensure, is } from "https://deno.land/x/unknownutil@v3.14.0/mod.ts";
+
 import { join } from "https://deno.land/std@0.214.0/path/mod.ts";
 
 import { ActionData } from "https://deno.land/x/ddu_kind_file@v0.7.1/file.ts";
@@ -29,6 +31,11 @@ export class Source extends BaseSource<Params> {
 
           try {
             // ~/.vim-bookmarksのl:bm_sessionsを読み込む
+            const bookmarksData = ensure(
+              await args.denops.call("bm#location_list"),
+              is.ArrayOf(is.String),
+            );
+            console.log(bookmarksData[0]);
             // 変数の中身をjsonに変換する
             // 中身を展開
             // それぞれのパスをitemsに追加する
