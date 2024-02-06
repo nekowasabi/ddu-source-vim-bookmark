@@ -2,8 +2,8 @@
 
 ## Description
 
-Ddu.vim's source. Integrate with\
-[vim-bookmark](https://github.com/MattesGroeger/vim-bookmarks)
+Ddu.vim's source.\
+Integrate with [vim-bookmark](https://github.com/MattesGroeger/vim-bookmarks)
 
 ## Required
 
