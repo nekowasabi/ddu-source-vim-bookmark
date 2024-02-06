@@ -4,14 +4,20 @@ import {
   Item,
   SourceOptions,
 } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.10.2/deps.ts";
-
+import { Denops } from "https://deno.land/x/ddu_vim@v3.10.2/deps.ts";
 import { ensure, is } from "https://deno.land/x/unknownutil@v3.14.0/mod.ts";
-
-import { join } from "https://deno.land/std@0.214.0/path/mod.ts";
-
 import { ActionData } from "https://deno.land/x/ddu_kind_file@v0.7.1/file.ts";
+
 type Params = Record<never, never>;
+
+type Bookmark = {
+  path: string;
+  line: number;
+  word: string;
+  annotation?: string;
+};
+
+type Bookmarks = Bookmark[];
 
 export class Source extends BaseSource<Params> {
   override kind = "file";
@@ -25,27 +31,34 @@ export class Source extends BaseSource<Params> {
   }): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       async start(controller) {
-        const dir = await fn.getcwd(args.denops) as string;
-        const tree = async (root: string) => {
+        const tree = async () => {
           const items: Item<ActionData>[] = [];
 
           try {
-            // ~/.vim-bookmarksのl:bm_sessionsを読み込む
             const bookmarksData = ensure(
               await args.denops.call("bm#location_list"),
               is.ArrayOf(is.String),
             );
-            console.log(bookmarksData[0]);
-            // 変数の中身をjsonに変換する
-            // 中身を展開
-            // それぞれのパスをitemsに追加する
-            for await (const entry of Deno.readDir(root)) {
-              const path = join(root, entry.name);
-
+            const bookmarks: Bookmarks = [];
+            for (const bookmarkData of bookmarksData) {
+              const d = bookmarkData.split(":");
+              console.log(d);
+              const b: Bookmark = {
+                path: d[0],
+                line: Number(d[1]),
+                word: d[2],
+                annotation: d[3],
+              };
+              bookmarks.push(b);
+            }
+            for (const bookmark of bookmarks) {
               items.push({
-                word: path,
+                word: bookmark.word === "Annotation" && bookmark.annotation
+                  ? bookmark.path + " Annotation: " + bookmark.annotation
+                  : bookmark.path + " " + bookmark.word,
                 action: {
-                  path: path,
+                  path: bookmark.path,
+                  lineNr: bookmark.line,
                 },
               });
             }
@@ -57,7 +70,7 @@ export class Source extends BaseSource<Params> {
         };
 
         controller.enqueue(
-          await tree(dir),
+          await tree(),
         );
 
         controller.close();
