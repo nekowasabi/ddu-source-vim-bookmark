@@ -1,5 +1,7 @@
 import {
   BaseSource,
+  Context,
+  DduItem,
   DduOptions,
   Item,
   SourceOptions,
@@ -7,6 +9,7 @@ import {
 import { Denops } from "https://deno.land/x/ddu_vim@v3.10.2/deps.ts";
 import { ensure, is } from "https://deno.land/x/unknownutil@v3.15.0/mod.ts";
 import { ActionData } from "https://deno.land/x/ddu_kind_file@v0.7.1/file.ts";
+import { ActionFlags } from "../../../ddu-source-lsp/denops/ddu_source_lsp/deps.ts";
 
 type Params = Record<never, never>;
 
@@ -24,6 +27,17 @@ export class Source extends BaseSource<Params> {
 
   // actionsにopenアクションを追加
   // vimscriptでファイルを開く関数を作って、それを呼び出すだけにする（単純なところから）
+  override actions = {
+    oooo: async (args: {
+      denops: Denops;
+      context: Context;
+      actionParams: unknown;
+      items: DduItem[];
+    }) => {
+      console.log("oooo");
+      return Promise.resolve(ActionFlags.None);
+    },
+  };
 
   override gather(args: {
     denops: Denops;

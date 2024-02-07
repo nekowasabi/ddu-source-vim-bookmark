@@ -24,7 +24,7 @@ export const BookmarkAction: Actions<Params> = {
     ) => {
       // ここでbm#del_bookmark_at_lineを実行
       for (const item of args.items) {
-        console.log(item);
+        console.log("here");
       }
       // 終わったらUIを閉じる
       return Promise.resolve(ActionFlags.None);
