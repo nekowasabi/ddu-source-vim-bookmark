@@ -28,13 +28,13 @@ export class Source extends BaseSource<Params> {
   // actionsにopenアクションを追加
   // vimscriptでファイルを開く関数を作って、それを呼び出すだけにする（単純なところから）
   override actions = {
-    oooo: async (args: {
+    open: async (args: {
       denops: Denops;
       context: Context;
       actionParams: unknown;
       items: DduItem[];
     }) => {
-      console.log("oooo");
+      console.log("ここで入力状況を取得する");
       return Promise.resolve(ActionFlags.None);
     },
   };
