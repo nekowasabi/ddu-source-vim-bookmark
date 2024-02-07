@@ -20,7 +20,10 @@ type Bookmark = {
 type Bookmarks = Bookmark[];
 
 export class Source extends BaseSource<Params> {
-  override kind = "file";
+  override kind = "bookmark";
+
+  // actionsにopenアクションを追加
+  // vimscriptでファイルを開く関数を作って、それを呼び出すだけにする（単純なところから）
 
   override gather(args: {
     denops: Denops;
