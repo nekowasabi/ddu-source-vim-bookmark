@@ -19,7 +19,20 @@ Plug 'nekowasabi/ddu-source-vim-bookmark'
 
 ## Usage
 
+### execute
 ```vim
 nnoremap <silent> <Leader>b
   \ <Cmd>call ddu#start({'sources': [{'name': 'vim-bookmark'}]})<CR>
+
+call ddu#custom#patch_global(#{
+    \   kindOptions: #{
+    \     bookmark: #{
+    \       defaultAction: 'open',
+    \     },
+    \   }
+    \ })
+```
+
+### kind
+- clear: clear selected bookmark.
 ```
