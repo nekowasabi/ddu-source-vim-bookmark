@@ -36,7 +36,9 @@ export const BookmarkAction: Actions<Params> = {
     actionParams: unknown;
     items: DduItem[];
   }) => {
+    // 分割代入
     const { denops, items } = args;
+    // unknownutilのmaybe関数便利
     const action = maybe(items.at(0)?.action, isDduItemAction);
 
     if (!action) {
