@@ -53,7 +53,7 @@ export class Source extends BaseSource<Params> {
             for (const bookmark of bookmarks) {
               items.push({
                 word: bookmark.word === "Annotation" && bookmark.annotation
-                  ? bookmark.path + " Annotation: " + bookmark.annotation
+                  ? bookmark.annotation + " / " + bookmark.path
                   : bookmark.path + " " + bookmark.word,
                 action: {
                   path: bookmark.path,
