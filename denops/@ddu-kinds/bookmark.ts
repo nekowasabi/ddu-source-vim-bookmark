@@ -38,18 +38,25 @@ export const BookmarkAction: Actions<Params> = {
   }) => {
     // 分割代入
     const { denops, items } = args;
-    // unknownutilのmaybe関数便利
-    const action = maybe(items.at(0)?.action, isDduItemAction);
 
-    if (!action) {
-      return ActionFlags.None;
+    try {
+      for (const item of items) {
+        // unknownutilのmaybe関数便利
+        const action = maybe(item?.action, isDduItemAction);
+
+        if (!action) {
+          return ActionFlags.None;
+        }
+
+        await denops.call(
+          "bm#del_bookmark_at_line",
+          action.path,
+          action.lineNr,
+        );
+      }
+    } catch {
     }
 
-    await denops.call(
-      "bm#del_bookmark_at_line",
-      action.path,
-      action.lineNr,
-    );
     return ActionFlags.None;
   },
 };
