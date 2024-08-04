@@ -57,6 +57,7 @@ export const BookmarkAction: Actions<Params> = {
     } catch {
     }
 
+    console.log("bookmarks cleared");
     return ActionFlags.None;
   },
 };
